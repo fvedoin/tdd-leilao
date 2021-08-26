@@ -109,13 +109,13 @@ describe("Products", () => {
         order: p1.order,
       });
 
-    const response2 = await request(app)
+    const response = await request(app)
       .put(`/products/${p1.order}/newBid`)
       .send({
         bid: 1200
       });
     
-    expect(response2.body).toBe("Este produto já foi leiloado e não aceita mais lances");
+    expect(response.body).toBe("Este produto já foi leiloado e não aceita mais lances");
   });
 
   //SE O LANCE FOR IGUAL AO BUY OUT, O LEILÃO DEVE SER ENCERRADO
@@ -134,7 +134,6 @@ describe("Products", () => {
   //FINALIZA UM LEILÃO COM SUCESSO
   it("should finish the bid auction", async () => {
     const p1 = await factory.create("Product");
-    const p2 = await factory.create("Product");
 
     const response = await request(app)
       .post("/finish")
@@ -149,19 +148,19 @@ describe("Products", () => {
   it("should not finish an already finished bid auction", async () => {
     const p1 = await factory.create("Product");
 
-    const response1 = await request(app)
+    await request(app)
       .post("/finish")
       .send({
         order: p1.order,
       });
 
-    const response2 = await request(app)
+    const response = await request(app)
       .post("/finish")
       .send({
         order: p1.order,
       });
 
-    expect(response2.body).toBe("Este produto já foi leiloado");
+    expect(response.body).toBe("Este produto já foi leiloado");
   });
 
   //NÃO FINALIZA O LEILÃO DE UM PRODUTO INEXISTENTE
