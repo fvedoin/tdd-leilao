@@ -139,7 +139,7 @@ describe("Products", () => {
     expect(response.status).toBe(201);
   });
 
-  //FINALIZA UM LEILÃO COM SUCESSO
+  //NÃO PERMITE FINALIZAR O LEILÃO DE UM PRODUTO QUE JÁ FOI LEILOADO
   it("should not finish an already finished bid auction", async () => {
     const p1 = await factory.create("Product");
 
