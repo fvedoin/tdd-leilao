@@ -111,6 +111,20 @@ describe("Products", () => {
     expect(response2.body).toBe("Este produto já foi leiloado e não aceita mais lances");
   });
 
+  //SE O LANCE FOR IGUAL AO BUY OUT, O LEILÃO DEVE SER ENCERRADO
+  it("this should insert the bid and finish the bid auction", async () => {
+    const p1 = await factory.create("Product");
+
+    const response = await request(app)
+      .put(`/products/${p1.order}/newBid`)
+      .send({
+        order: p1.order,
+        bid: p1.buyOut
+      });
+    
+    expect(response.status).toBe(201);
+  });
+
   //FINALIZA UM LEILÃO COM SUCESSO
   it("should finish the bid auction", async () => {
     const p1 = await factory.create("Product");

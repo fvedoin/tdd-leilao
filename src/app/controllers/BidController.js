@@ -67,11 +67,23 @@ class BidController {
       return res.status(500).json("Este lance é maior que o valor de buy out do produto");
     }
 
-    await Product.update({ bid: bid }, {
+    const updated = await Product.update({ bid: bid }, {
       where: {
         order: order
       }
     });
+
+    if(product.dataValues.buyOut == bid){
+        await SoldProduct.create({
+          order: product.dataValues.order,
+          lowerBid: product.dataValues.lowerBid,
+          buyOut: product.dataValues.buyOut,
+          bid: bid,
+          name: product.dataValues.name,
+          description: product.dataValues.description
+        });
+        await product.destroy();
+    }
 
     return res.status(201).send();
   }
