@@ -33,7 +33,7 @@ describe("Products", () => {
         buyOut: 2000.00,
       });
 
-    expect(response.body).toBe("Produto não encontrado");
+    expect(response.body).toBe("Campos incompletos");
   });
 
   //BUSCA O PRÓXIMO PRODUTO A SER LEILOADO (PRIMEIRO A SER INSERIDO)

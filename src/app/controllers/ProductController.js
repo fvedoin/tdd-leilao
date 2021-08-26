@@ -11,7 +11,7 @@ class ProductController {
     const { name, description, buyOut, lowerBid } = req.body;
 
     if(!name || !description || !buyOut || !lowerBid) {
-      return res.status(500).json("Produto não encontrado");
+      return res.status(500).json("Campos incompletos");
     }
 
     const product = { name, description, buyOut, lowerBid };
