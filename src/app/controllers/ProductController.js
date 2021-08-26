@@ -10,6 +10,10 @@ class ProductController {
   async store(req, res) {
     const { name, description, buyOut, lowerBid } = req.body;
 
+    if(!name || !description || !buyOut || !lowerBid) {
+      return res.status(500).json("Produto não encontrado");
+    }
+
     const product = { name, description, buyOut, lowerBid };
 
     const inserted = await Product.create(product);

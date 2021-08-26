@@ -17,11 +17,23 @@ describe("Products", () => {
         name: 'O Grito',
         description: 'Tinta guache',
         buyOut: 2000.00,
-        lowerBid: 500,
-        bid: null
+        lowerBid: 500
       });
 
     expect(response.status).toBe(201);
+  });
+
+  //NÃO INSERE UM NOVO PRODUTO COM CAMPOS EM BRANCO
+  it("should not insert a product with blank fields", async () => {
+    const response = await request(app)
+      .post("/products")
+      .send({
+        name: 'Monalisa',
+        description: 'Pintado com tinta óleo',
+        buyOut: 2000.00,
+      });
+
+    expect(response.body).toBe("Produto não encontrado");
   });
 
   //BUSCA O PRÓXIMO PRODUTO A SER LEILOADO (PRIMEIRO A SER INSERIDO)
@@ -67,7 +79,7 @@ describe("Products", () => {
     const response = await request(app)
       .put(`/products/${p1.order}/newBid`)
       .send({
-        bid: p1.lowerBid-100
+        bid: p1.lowerBid-100.00
       });
 
     expect(response.body).toBe("O lance deve ser maior que " + p1.lowerBid);
