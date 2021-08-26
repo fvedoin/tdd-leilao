@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "prestart": "sequelize db:migrate",
     "start": "node src/server.js",
     "dev": "nodemon src/server.js --ignore __tests__",
     "pretest": "NODE_ENV=test sequelize db:migrate",
