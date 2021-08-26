@@ -9,6 +9,7 @@ describe("Products", () => {
     await truncate();
   });
 
+  //INSERE UM NOVO PRODUTO
   it("should insert a valid product", async () => {
     const response = await request(app)
       .post("/products")
@@ -23,43 +24,56 @@ describe("Products", () => {
     expect(response.status).toBe(201);
   });
 
+  //BUSCA O PRÓXIMO PRODUTO A SER LEILOADO (PRIMEIRO A SER INSERIDO)
   it("should show the next product", async () => {
     const p1 = await factory.create("Product");
     const p2 = await factory.create("Product");
     const p3 = await factory.create("Product");
-    const b1 = await factory.create("Bid", {
-      order: p1.order,
-      bid: p1.buyOut - 100
-    });
-    
-    const b2 = await factory.create("Bid", {
-      order: p1.order,
-      bid: p1.buyOut - 50
-    });
 
     const response = await request(app)
       .get("/next-product");
     
-    expect(response.body.nextProduct.order).toBe(p1.order);
+    expect(response.body.order).toBe(p1.order);
   });
 
-  it("should return the last inserted bid", async () => {
+  //INSERE UM LANCE COM SUCESSO
+  it("should insert a bid", async () => {
     const p1 = await factory.create("Product");
-    const p2 = await factory.create("Product");
-    const p3 = await factory.create("Product");
-    const b1 = await factory.create("Bid", {
-      order: p1.order,
-      bid: p1.buyOut - 100
-    });
-    
-    const b2 = await factory.create("Bid", {
-      order: p1.order,
-      bid: p1.buyOut - 50
-    });
 
     const response = await request(app)
-      .get("/next-product");
-    
-    expect(response.body.currentBid.id).toBe(b2.id);
+      .put(`/products/${p1.order}/newBid`)
+      .send({
+        order: p1.buyOut-100,
+      });
+
+    expect(response.status).toBe(201);
+  });
+
+  //SE O LANCE FOR MENOR QUE O LANCE MÍNIMO, NÃO INSERE O LANCE
+  it("should not insert a bid with bid < product lower bid", async () => {
+    const p1 = await factory.create("Product");
+
+    const response = await request(app)
+      .put(`/products/${p1.order}/newBid`)
+      .send({
+        order: p1.order,
+        bid: p1.lowerBid-100
+      });
+
+    expect(response.body).toBe("O lance deve ser maior que " + p1.lowerBid);
+  });
+
+  //FINALIZA UM LEILÃO COM SUCESSO
+  it("should finish the bid auction", async () => {
+    const p1 = await factory.create("Product");
+    const p2 = await factory.create("Product");
+
+    const response = await request(app)
+      .post("/finish")
+      .send({
+        order: p1.order,
+      });
+
+    expect(response.status).toBe(201);
   });
 });
