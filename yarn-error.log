@@ -1,0 +1,50 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn add sqlite3 -D
+
+PATH: 
+  /home/fernando/.local/bin:/home/fernando/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+Yarn version: 
+  1.22.11
+
+Node version: 
+  14.15.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: EACCES: permission denied, unlink '/home/fernando/Área de Trabalho/youtube-nodejs-tdd-jest-master/node_modules/.bin/acorn'
+
+npm manifest: 
+  {
+    "name": "authtdd",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+      "start": "node src/server.js",
+      "dev": "nodemon src/server.js --ignore __tests__",
+      "pretest": "NODE_ENV=test sequelize db:migrate",
+      "test": "NODE_ENV=test jest",
+      "posttest": "NODE_ENV=test sequelize db:migrate:undo:all"
+    },
+    "dependencies": {
+      "bcryptjs": "^2.4.3",
+      "dotenv": "^6.2.0",
+      "express": "^4.16.4",
+      "factory-girl": "^5.0.4",
+      "faker": "^4.1.0",
+      "jsonwebtoken": "^8.5.0",
+      "pg": "^7.8.0",
+      "sequelize": "^4.42.0"
+    },
+    "devDependencies": {
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
