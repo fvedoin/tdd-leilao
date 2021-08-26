@@ -21,6 +21,10 @@ module.exports = {
         type: Sequelize.FLOAT,
         allowNull: false
       },
+      bid: {
+        type: Sequelize.FLOAT,
+        allowNull: true
+      },
       buyOut: {
         type: Sequelize.FLOAT,
         allowNull: false

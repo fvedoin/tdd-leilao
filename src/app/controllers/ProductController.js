@@ -24,14 +24,7 @@ class ProductController {
       ]
     });
 
-    const currentBid = await Bid.findOne({
-      where: {order: nextProduct.dataValues.order},
-      order: [
-        ['created_at', 'DESC'],
-    ]
-    });
-
-    return res.status(200).json({nextProduct, currentBid});
+    return res.status(200).json(nextProduct);
   }
 }
 

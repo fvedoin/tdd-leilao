@@ -2,10 +2,11 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable("products", {
+    return queryInterface.createTable("sold_products", {
       order: {
         type: Sequelize.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
         allowNull: false
       },
       name: {
@@ -19,6 +20,10 @@ module.exports = {
       lowerBid: {
         type: Sequelize.FLOAT,
         allowNull: false
+      },
+      bid: {
+        type: Sequelize.FLOAT,
+        allowNull: true
       },
       buyOut: {
         type: Sequelize.FLOAT,
@@ -36,6 +41,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("products");
+    return queryInterface.dropTable("sold_products");
   }
 };

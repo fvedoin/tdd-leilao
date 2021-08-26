@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Product = sequelize.define(
-    "Product",
+  const SoldProduct = sequelize.define(
+    "SoldProduct",
     {
       order: {
         type: DataTypes.INTEGER,
@@ -16,5 +16,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  return Product;
+  return SoldProduct;
 };
