@@ -34,6 +34,8 @@ class BidController {
       });
       if(soldProduct){
         return res.status(500).json("Este produto já foi leiloado");
+      }else{
+        return res.status(500).json("Produto não encontrado");
       }
     }
   }
@@ -56,6 +58,8 @@ class BidController {
       });
       if(soldProduct){
         return res.status(500).json("Este produto já foi leiloado e não aceita mais lances");
+      }else{
+        return res.status(500).json("Produto não encontrado");
       }
     }
 

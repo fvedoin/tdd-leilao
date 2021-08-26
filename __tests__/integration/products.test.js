@@ -43,10 +43,21 @@ describe("Products", () => {
     const response = await request(app)
       .put(`/products/${p1.order}/newBid`)
       .send({
-        order: p1.buyOut-100,
+        bid: p1.buyOut-100,
       });
 
     expect(response.status).toBe(201);
+  });
+
+  //NÃO INSERE UM LANCE PARA UM PRODUTO INEXISTENTE
+  it("should not insert a bid to a non-existing product", async () => {
+    const response = await request(app)
+      .put(`/products/9999/newBid`)
+      .send({
+        bid: 1300,
+      });
+
+    expect(response.body).toBe("Produto não encontrado");
   });
 
   //SE O LANCE FOR MENOR QUE O LANCE MÍNIMO, NÃO INSERE O LANCE
@@ -56,7 +67,6 @@ describe("Products", () => {
     const response = await request(app)
       .put(`/products/${p1.order}/newBid`)
       .send({
-        order: p1.order,
         bid: p1.lowerBid-100
       });
 
@@ -70,7 +80,6 @@ describe("Products", () => {
     const response = await request(app)
       .put(`/products/${p1.order}/newBid`)
       .send({
-        order: p1.order,
         bid: p1.buyOut+100
       });
 
@@ -84,7 +93,6 @@ describe("Products", () => {
     const response = await request(app)
       .put(`/products/${p1.order}/newBid`)
       .send({
-        order: p1.order,
         bid: 1200
       });
 
@@ -104,7 +112,6 @@ describe("Products", () => {
     const response2 = await request(app)
       .put(`/products/${p1.order}/newBid`)
       .send({
-        order: p1.order,
         bid: 1200
       });
     
@@ -118,7 +125,6 @@ describe("Products", () => {
     const response = await request(app)
       .put(`/products/${p1.order}/newBid`)
       .send({
-        order: p1.order,
         bid: p1.buyOut
       });
     
@@ -156,5 +162,16 @@ describe("Products", () => {
       });
 
     expect(response2.body).toBe("Este produto já foi leiloado");
+  });
+
+  //NÃO FINALIZA O LEILÃO DE UM PRODUTO INEXISTENTE
+  it("should not finish the bid auction of a non-existing product", async () => {
+    const response = await request(app)
+      .post("/finish")
+      .send({
+        order: 9999,
+      });
+
+    expect(response.body).toBe("Produto não encontrado");
   });
 });
