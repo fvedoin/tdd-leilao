@@ -48,6 +48,10 @@ class BidController {
       return res.status(500).json("O lance deve ser maior que " + product.dataValues.lowerBid);
     }
 
+    if(product.dataValues.bid > bid){
+      return res.status(500).json("O produto já possui um lance maior que este");
+    }
+
     await Product.update({ bid: bid }, {
       where: {
         order: order

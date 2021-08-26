@@ -63,6 +63,20 @@ describe("Products", () => {
     expect(response.body).toBe("O lance deve ser maior que " + p1.lowerBid);
   });
 
+  //SE O LANCE FOR MENOR QUE OUTRO LANCE DADO, NÃO INSERE O LANCE
+  it("should not insert a bid with bid < product previous bid", async () => {
+    const p1 = await factory.create("Product", {bid: 1300});
+
+    const response = await request(app)
+      .put(`/products/${p1.order}/newBid`)
+      .send({
+        order: p1.order,
+        bid: 1200
+      });
+
+    expect(response.body).toBe("O produto já possui um lance maior que este");
+  });
+
   //FINALIZA UM LEILÃO COM SUCESSO
   it("should finish the bid auction", async () => {
     const p1 = await factory.create("Product");
