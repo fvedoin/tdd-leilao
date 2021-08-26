@@ -91,6 +91,26 @@ describe("Products", () => {
     expect(response.body).toBe("O produto já possui um lance maior que este");
   });
 
+  //UM PRODUTO PODE QUE JÁ FOI LEILOADO NÃO PODE RECEBER MAIS LANCES
+  it("this should not allow bids on products that have already been auctioned", async () => {
+    const p1 = await factory.create("Product");
+
+    await request(app)
+      .post("/finish")
+      .send({
+        order: p1.order,
+      });
+
+    const response2 = await request(app)
+      .put(`/products/${p1.order}/newBid`)
+      .send({
+        order: p1.order,
+        bid: 1200
+      });
+    
+    expect(response2.body).toBe("Este produto já foi leiloado e não aceita mais lances");
+  });
+
   //FINALIZA UM LEILÃO COM SUCESSO
   it("should finish the bid auction", async () => {
     const p1 = await factory.create("Product");

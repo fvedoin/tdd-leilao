@@ -42,7 +42,18 @@ class BidController {
       where: {
         order: order
       }
-    })
+    });
+
+    if(!product) {
+      const soldProduct = await SoldProduct.findOne({
+        where: {
+          order: order
+        }
+      });
+      if(soldProduct){
+        return res.status(500).json("Este produto já foi leiloado e não aceita mais lances");
+      }
+    }
 
     if(product.dataValues.lowerBid > bid){
       return res.status(500).json("O lance deve ser maior que " + product.dataValues.lowerBid);
