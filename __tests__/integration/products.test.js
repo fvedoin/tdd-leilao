@@ -55,7 +55,7 @@ describe("Products", () => {
     const response = await request(app)
       .put(`/products/${p1.order}/newBid`)
       .send({
-        bid: p1.buyOut-100,
+        bid: p1.buyOut-100.00,
       });
 
     expect(response.status).toBe(201);
@@ -92,7 +92,7 @@ describe("Products", () => {
     const response = await request(app)
       .put(`/products/${p1.order}/newBid`)
       .send({
-        bid: p1.buyOut+100
+        bid: p1.buyOut+100.00
       });
 
     expect(response.body).toBe("Este lance é maior que o valor de buy out do produto");
@@ -140,7 +140,7 @@ describe("Products", () => {
         bid: p1.buyOut
       });
     
-    expect(response.status).toBe(201);
+    expect(response.body).toBe("Lance igual ao valor de buy out. Leilão encerrado");
   });
 
   //FINALIZA UM LEILÃO COM SUCESSO

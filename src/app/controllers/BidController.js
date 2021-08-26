@@ -91,6 +91,7 @@ class BidController {
           description: product.dataValues.description
         });
         await product.destroy();
+        return res.status(201).json("Lance igual ao valor de buy out. Leilão encerrado");
     }
 
     return res.status(201).send();
