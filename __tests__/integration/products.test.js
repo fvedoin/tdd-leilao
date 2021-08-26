@@ -138,4 +138,23 @@ describe("Products", () => {
 
     expect(response.status).toBe(201);
   });
+
+  //FINALIZA UM LEILÃO COM SUCESSO
+  it("should not finish an already finished bid auction", async () => {
+    const p1 = await factory.create("Product");
+
+    const response1 = await request(app)
+      .post("/finish")
+      .send({
+        order: p1.order,
+      });
+
+    const response2 = await request(app)
+      .post("/finish")
+      .send({
+        order: p1.order,
+      });
+
+    expect(response2.body).toBe("Este produto já foi leiloado");
+  });
 });

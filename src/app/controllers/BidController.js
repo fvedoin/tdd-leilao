@@ -11,26 +11,30 @@ class BidController {
   async finish(req, res) {
     const { order } = req.body;
 
-    try {
-      const product = await Product.findOne({ 
-        where: {order: order}
-      });
+    const product = await Product.findOne({ 
+      where: {order: order}
+    });
 
-      if(product){
-        await SoldProduct.create({
-          order: product.dataValues.order,
-          lowerBid: product.dataValues.lowerBid,
-          buyOut: product.dataValues.buyOut,
-          bid: product.dataValues.bid,
-          name: product.dataValues.name,
-          description: product.dataValues.description
-        });
-        await product.destroy();
-        return res.status(201).send();
+    if(product){
+      await SoldProduct.create({
+        order: product.dataValues.order,
+        lowerBid: product.dataValues.lowerBid,
+        buyOut: product.dataValues.buyOut,
+        bid: product.dataValues.bid,
+        name: product.dataValues.name,
+        description: product.dataValues.description
+      });
+      await product.destroy();
+      return res.status(201).send();
+    }else{
+      const soldProduct = await SoldProduct.findOne({
+        where: {
+          order: order
+        }
+      });
+      if(soldProduct){
+        return res.status(500).json("Este produto já foi leiloado");
       }
-      
-    }catch(e){
-      return res.status(500).send();
     }
   }
 
